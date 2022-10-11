@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 
@@ -37,18 +38,25 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', Rules\Password::defaults()],
+            'department_name' => ['nullable', 'string', 'max:20'],
+            'mobile' => ['nullable', 'numeric'],
+            'account_type' => ['required', 'string', Rule::in(['provider', 'submitter'])]
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'department' => $request->department_name,
+            'mobile' => $request->mobile,
+            'role' => $request->account_type,
+            'active' => true
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
+        Auth::login($user, $request->remember);
 
         return redirect(RouteServiceProvider::HOME);
     }

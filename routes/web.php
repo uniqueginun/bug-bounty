@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SubmittedProductsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,8 +25,14 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', fn () => Inertia::render('Dashboard'))->name('dashboard');
+
+    Route::get('products', [SubmittedProductsController::class, 'index'])->name('products.index');
+    Route::get('products/create', [SubmittedProductsController::class, 'create'])->name('products.create');
+    Route::post('products', [SubmittedProductsController::class, 'store'])->name('products.store');
+});
 
 require __DIR__.'/auth.php';
