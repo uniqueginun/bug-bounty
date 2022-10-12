@@ -123,7 +123,7 @@ const showingNavigationDropdown = ref(false);
                 <svg class="text-gray-400 group-hover:text-gray-500 mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
                 </svg>
-                Office Map
+                Office Map 1
               </a>
             </div>
           </nav>
@@ -199,13 +199,13 @@ const showingNavigationDropdown = ref(false);
                 Announcements
               </a>
 
-              <a href="#" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+              <Link method="post" as="button" :href="route('logout')" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                 <!-- Heroicon name: outline/map -->
                 <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
                 </svg>
-                Office Map
-              </a>
+                Logout
+              </Link>
             </div>
           </nav>
         </div>
@@ -225,7 +225,7 @@ const showingNavigationDropdown = ref(false);
       </div>
     </div>
   </div>
-  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden mb-6">
     <div class="lg:hidden">
       <div class="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-1.5">
         <div>
@@ -243,7 +243,7 @@ const showingNavigationDropdown = ref(false);
       </div>
     </div>
     <div class="relative z-0 flex flex-1 overflow-hidden">
-      <main class="relative z-0 flex-1 overflow-y-auto focus:outline-none">
+      <main class="relative z-0 flex-1 overflow-y-auto focus:outline-none mx-4">
         <!-- Start main area-->
         <div class="absolute inset-0 py-6 px-4 sm:px-6 lg:px-8">
             <ApplicationAlert />

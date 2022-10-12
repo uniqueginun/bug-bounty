@@ -8,6 +8,12 @@ use App\Http\Requests\ProductStoreRequest;
 
 class SubmittedProductsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('checkRole:provider');
+    }
+
     public function index(Request $request)
     {
         $services = $request->user()->services()->simplePaginate();
