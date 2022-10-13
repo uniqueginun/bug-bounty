@@ -24,6 +24,6 @@ class ServiceSubmittionController extends Controller
 
         $service->submitReport($request->details, $request->attachment);
 
-        return to_route('submittion.product.details', $service->uuid);
+        return to_route('submittion.product.details', $service->uuid)->with('success', 'Report submitted.');
     }
 }

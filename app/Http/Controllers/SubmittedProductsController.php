@@ -31,6 +31,6 @@ class SubmittedProductsController extends Controller
     {
         $request->user()->services()->forceCreate($request->validated());
 
-        return to_route('products.index');
+        return to_route('products.index')->with('success', 'Product submitted.');
     }
 }

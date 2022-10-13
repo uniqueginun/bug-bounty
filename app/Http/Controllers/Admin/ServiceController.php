@@ -39,7 +39,7 @@ class ServiceController extends Controller
 
             DB::commit();
 
-            return to_route('analyst.services.index');
+            return to_route('analyst.services.index')->with('success', 'Product ' . str($request->action)->title()->toString() . ' successfully.');
         } 
         
         catch (Throwable $th) 
@@ -48,9 +48,7 @@ class ServiceController extends Controller
 
             DB::rollBack();
 
-            return back()->withErrors([
-                'error' => 'something went wrong'
-            ]);
+            return back()->with('error', 'Something went wrong.');
         }
     }
 }

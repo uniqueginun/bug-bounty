@@ -231,7 +231,7 @@ const showingNavigationDropdown = ref(false);
         </div>
         <!-- End main area -->
       </main>
-      <aside class="relative hidden w-96 flex-shrink-0 overflow-y-auto border-l border-gray-200 xl:flex xl:flex-col">
+      <aside class="relative hidden w-1/3 flex-shrink-0 overflow-y-auto border-l border-gray-200 xl:flex xl:flex-col">
         <!-- Start secondary column (hidden on smaller screens) -->
         <div class="absolute inset-0 py-6 px-1 sm:px-6 lg:px-4">
           <div class="h-full rounded-lg bordered border-gray-200">
