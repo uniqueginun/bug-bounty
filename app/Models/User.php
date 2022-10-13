@@ -47,6 +47,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * The attributes that should be appended.
+     *
+     * @var array<string, string>
+     */
+    protected $appends = ['internal_user'];
+
     public function services(): HasMany
     {
         return $this->hasMany(Service::class);
@@ -54,6 +61,13 @@ class User extends Authenticatable
 
     public function hasRole(string $role): bool
     {
-        return $this->role === $role;
+        return $this->role === $role || $this->role === 'admin';
+    }
+
+    public function getInternalUserAttribute(): bool
+    {
+        return in_array($this->role, [
+            'admin', 'analyst'
+        ]);
     }
 }

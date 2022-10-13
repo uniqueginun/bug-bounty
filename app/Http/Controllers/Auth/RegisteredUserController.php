@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Auth\Events\Registered;
+use Inertia\Inertia;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
-use Inertia\Inertia;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use App\Providers\RouteServiceProvider;
 
 class RegisteredUserController extends Controller
 {
@@ -41,7 +42,10 @@ class RegisteredUserController extends Controller
             'password' => ['required', Rules\Password::defaults()],
             'department_name' => ['nullable', 'string', 'max:20'],
             'mobile' => ['nullable', 'numeric'],
-            'account_type' => ['required', 'string', Rule::in(['provider', 'submitter'])]
+            'account_type' => ['required', 'string', Rule::in(['provider', 'submitter'])],
+            'redirect_to' => [
+                'nullable', Rule::exists('services', 'uuid')
+            ]
         ]);
 
         $user = User::create([
@@ -57,6 +61,10 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user, $request->remember);
+
+        if(Str::isUuid($request->redirect_to)) {
+           return to_route('submittion.product.details', $request->redirect_to);
+        }
 
         return redirect(RouteServiceProvider::HOME);
     }

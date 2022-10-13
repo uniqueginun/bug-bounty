@@ -2,6 +2,7 @@
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import { onBeforeMount, computed } from 'vue';
 
 const form = useForm({
     name: '',
@@ -9,7 +10,8 @@ const form = useForm({
     password: '',
     department_name: '',
     mobile: '',
-    account_type: 'provider',
+    account_type: 'submitter',
+    redirect_to: '',
     remember: false
 });
 
@@ -18,6 +20,17 @@ const submit = () => {
         onFinish: () => form.reset('password'),
     });
 };
+
+const p = computed(() => {
+    const q = window.location.search
+    return q.startsWith('?p=') ? q.substring(3) : ''
+})
+
+onBeforeMount(() => {
+    if(p.value.length !== 36) return
+
+    form.redirect_to = p.value
+})
 </script>
 
 <template>
@@ -33,7 +46,7 @@ const submit = () => {
                 <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                     <form class="space-y-6" @submit.prevent="submit">
                         <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700">Your name</label>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                             <div class="mt-1">
                                 <input id="name" v-model="form.name" type="text" required
                                     class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
@@ -42,7 +55,7 @@ const submit = () => {
                         </div>
 
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                             <div class="mt-1">
                                 <input id="email" v-model="form.email" type="email" autocomplete="email" required
                                     class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
@@ -86,16 +99,19 @@ const submit = () => {
                                 <legend class="sr-only">Account type</legend>
                                 <div class="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10">
                                     <div class="flex items-center">
-                                        <input id="provider" name="account_type" v-model="form.account_type" value="provider" type="radio" checked
+                                        <input id="submitter" name="account_type" v-model="form.account_type"
+                                            value="submitter" type="radio"
+                                            class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                        <label for="submitter"
+                                            class="ml-3 block text-sm font-medium text-gray-700">Submitter</label>
+                                    </div>
+                                    <div class="flex items-center" v-if="p.length !== 36">
+                                        <input id="provider" name="account_type" v-model="form.account_type"
+                                            value="provider" type="radio" checked
                                             class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
                                         <label for="provider"
-                                            class="ml-3 block text-sm font-medium text-gray-700">Service Provider</label>
-                                    </div>
-
-                                    <div class="flex items-center">
-                                        <input id="submitter" name="account_type" v-model="form.account_type" value="submitter" type="radio"
-                                            class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                                        <label for="submitter" class="ml-3 block text-sm font-medium text-gray-700">Submitter</label>
+                                            class="ml-3 block text-sm font-medium text-gray-700">Service
+                                            Provider</label>
                                     </div>
                                 </div>
                             </fieldset>

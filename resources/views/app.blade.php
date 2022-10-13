@@ -14,7 +14,7 @@
         @vite('resources/js/app.js')
         @inertiaHead
     </head>
-    <body class="h-full overflow-hidden">
+    <body class="h-full overflow-scroll">
         @inertia
     </body>
 </html>
