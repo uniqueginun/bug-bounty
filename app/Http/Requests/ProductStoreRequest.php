@@ -30,7 +30,7 @@ class ProductStoreRequest extends FormRequest
             ],
 
             'description' => [
-                'required', 'string'
+                'required', 'string', 'min:160'
             ],
 
             'severity' => [

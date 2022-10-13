@@ -16,13 +16,13 @@ class SubmittedProductsController extends Controller
 
     public function index(Request $request)
     {
-        $services = $request->user()->services()->simplePaginate();
+        $services = $request->user()->services()->with('approvedSubmittions')->simplePaginate();
 
         return Inertia::render('Products', compact('services'));
     }
 
 
-    public function create(Request $request)
+    public function create()
     {
         return Inertia::render('ProductCreate');
     }

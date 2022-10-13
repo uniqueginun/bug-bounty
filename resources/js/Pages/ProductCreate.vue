@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import { Head, useForm } from '@inertiajs/inertia-vue3';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 
 const form = useForm({
     product_name: '',
@@ -100,19 +101,25 @@ const submit = () => {
                     <div v-for="(item, index) of form.links" :key="index" class="grid grid-cols-3 gap-6">
                         <div class="col-span-3 sm:col-span-2">
                             <div class="mt-1 flex rounded-md shadow-sm">
-                                <span
-                                    class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-gray-500 sm:text-sm">
-                                    https://
-                                </span>
                                 <input type="text" v-model="form.links[index]" required
                                     class="block w-full min-w-0 flex-grow rounded-none border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                    <button v-if="index===0" type="button" @click="addLink" class="rounded-none bg-gray-200 rounded-r-md border border-l-0 border-gray-300 py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                        Add
-                                    </button>
+                                <button v-if="index===0" type="button" @click="addLink"
+                                    class="rounded-none bg-white rounded-r-md border border-l-0 border-gray-300 py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black"
+                                        stroke="currentColor" viewBox="0 0 455 455" xml:space="preserve">
+                                        <path d="M455 212.5H242.5V0h-30v212.5H0v30h212.5V455h30V242.5H455z" />
+                                    </svg>
+                                </button>
 
-                                    <button v-else type="button" @click="removeIndex(index)" class="rounded-none bg-red-400 rounded-r-md border border-l-0 border-gray-300 py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                        Remove
-                                    </button>
+                                <button v-else type="button" @click="removeIndex(index)"
+                                    class="rounded-none bg-white rounded-r-md border border-l-0 border-gray-300 py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 459.739 459.739"
+                                    class="w-6 h-6 text-red-500"
+                                        stroke="currentColor" xml:space="preserve">
+                                        <path
+                                            d="M229.869 0C102.917 0 0 102.917 0 229.869s102.917 229.869 229.869 229.869 229.869-102.917 229.869-229.869S356.821 0 229.869 0zm83.807 260.518H146.063c-16.926 0-30.649-13.723-30.649-30.649 0-16.927 13.723-30.65 30.649-30.65h167.613c16.925 0 30.649 13.723 30.649 30.65 0 16.926-13.724 30.649-30.649 30.649z" />
+                                    </svg>
+                                </button>
                             </div>
                             <InputError class="mt-2" :message="form.errors[`links.${index}`]" />
                         </div>
@@ -122,10 +129,7 @@ const submit = () => {
 
             <div class="pt-5">
                 <div class="flex justify-end">
-                    <button type="button"
-                        class="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Cancel</button>
-                    <button type="submit"
-                        class="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Save</button>
+                    <PrimaryButton :processing="form.processing">Submit</PrimaryButton>
                 </div>
             </div>
         </form>

@@ -1,5 +1,7 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
+const colors = require('tailwindcss/colors')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
@@ -11,11 +13,19 @@ module.exports = {
 
     theme: {
         extend: {
+            colors: {
+                teal: colors.teal,
+                cyan: colors.cyan,
+            },
+
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
         },
     },
 
-    plugins: [require('@tailwindcss/forms')],
+    plugins: [
+        require('@tailwindcss/forms'),
+        require('@tailwindcss/aspect-ratio'),
+    ],
 };
