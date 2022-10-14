@@ -1,12 +1,12 @@
 <?php
 
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\FileDownloadController;
 use App\Http\Controllers\ServiceSubmittionController;
 use App\Http\Controllers\SubmittedProductsController;
-use App\Models\Service;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\WelcomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +19,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Home', [
-        'services' => Service::query()->pending()->get(),
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-    ]);
-})->name('home');
+Route::get('/', WelcomeController::class)->name('home');
 
 
 
@@ -36,12 +30,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('products/create', [SubmittedProductsController::class, 'create'])->name('products.create');
     Route::post('products', [SubmittedProductsController::class, 'store'])->name('products.store');
     Route::get('products/{service:uuid}', [ServiceSubmittionController::class, 'show'])->name('submittion.product.details');
-    Route::post('products/{service:uuid}', [ServiceSubmittionController::class, 'submitReport'])->name('submittion.product.details');
+    Route::post('products/{service:uuid}', [ServiceSubmittionController::class, 'submitReport']);
+    Route::get('products/{service:uuid}/submittions', [ServiceSubmittionController::class, 'submittions'])->name('provider.services.submittions');
 
     Route::prefix('analyst')->as('analyst.')->middleware('checkRole:analyst')->group(function () {
         Route::get('services', [ServiceController::class, 'index'])->name('services.index');
         Route::post('services/{service:uuid}', [ServiceController::class, 'action'])->name('services.action');
+        Route::post('submittions/{submission:uuid}', [ServiceSubmittionController::class, 'action'])->name('submittions.action');
+        Route::get('services/{service:uuid}/submittions', [ServiceController::class, 'submittions'])->name('services.submittions');
     });
+
+    Route::get('download', FileDownloadController::class)->name('download');
 });
 
 require __DIR__.'/auth.php';

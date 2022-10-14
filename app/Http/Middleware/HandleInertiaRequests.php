@@ -42,7 +42,8 @@ class HandleInertiaRequests extends Middleware
                     'mobile' => $request->user()->mobile,
                     'email' => $request->user()->email,
                     'department_name' => $request->user()->department_name,
-                    'role' => $request->user()->role
+                    'role' => $request->user()->role,
+                    'internal_user' => $request->user()->internal_user
                 ] : null,
             ],
             'ziggy' => function () use ($request) {

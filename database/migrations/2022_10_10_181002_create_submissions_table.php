@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(Service::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();
             $table->text('details');
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'published', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }

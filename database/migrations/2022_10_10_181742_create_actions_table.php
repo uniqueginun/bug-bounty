@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('actions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->text('notes');
+            $table->text('notes')->nullable();
             $table->unsignedBigInteger('actionable_id');
             $table->string('actionable_type');
             $table->timestamps();

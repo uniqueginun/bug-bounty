@@ -1,16 +1,21 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link } from "@inertiajs/inertia-vue3";
-import ProductsGrid from "@/Components/ProductsGrid.vue";
-import ProductDetails from "@/Components/ProductDetails.vue";
+import SubmittionGrid from "@/Components/SubmittionGrid.vue";
 import useActions from "@/Hooks/useActions";
+import ProductDetails from "@/Components/ProductDetails.vue";
 
 defineProps({
-  services: Object,
+  submittions: Object,
+  service: Object,
+  makeAction: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const { processing, makeAction, currentItem, notes } = useActions(
-  "analyst.services.action"
+  "analyst.submittions.action"
 );
 </script>
 
@@ -18,9 +23,68 @@ const { processing, makeAction, currentItem, notes } = useActions(
   <Head title="Products" />
 
   <AuthenticatedLayout>
-    <template v-if="currentItem" #aside>
-      <ProductDetails :service="currentItem" />
-      <form v-if="currentItem.status === 'pending'">
+    <template #aside>
+      <ProductDetails :service="service" v-if="!currentItem" />
+      <div v-if="currentItem">
+        <div class="sm:col-span-6 mt-3">
+          <label class="block text-sm font-bold text-gray-700">Details</label>
+          <div class="mt-1">
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              {{ currentItem.details }}
+            </dd>
+          </div>
+        </div>
+        <div class="sm:col-span-6 mt-3">
+          <label class="block text-sm font-bold text-gray-700"
+            >Attachment</label
+          >
+          <div class="mt-1">
+            <a
+              type="button"
+              :href="
+                route('download', { zip: currentItem.attachments[0].path })
+              "
+              class="
+                inline-flex
+                items-center
+                py-2
+                px-4
+                text-sm
+                font-medium
+                text-gray-900
+                bg-white
+                rounded
+                border border-gray-200
+                hover:bg-gray-100 hover:text-blue-700
+                focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700
+                dark:bg-gray-700
+                dark:border-gray-600
+                dark:text-white
+                dark:hover:text-white
+                dark:hover:bg-gray-600
+                dark:focus:ring-blue-500
+                dark:focus:text-white
+              "
+            >
+              <svg
+                aria-hidden="true"
+                class="mr-2 w-4 h-4 fill-current"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5zm9 3.5H9V8a1 1 0 012 0v5z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              Download
+            </a>
+          </div>
+        </div>
+      </div>
+      <form v-if="currentItem && currentItem.status === 'pending'">
         <div class="sm:col-span-6 mt-3">
           <label for="notes" class="block text-sm font-medium text-gray-700"
             >Notes</label
@@ -133,62 +197,23 @@ const { processing, makeAction, currentItem, notes } = useActions(
           </button>
         </span>
       </form>
-
-      <Link
-        v-else-if="currentItem.status === 'published'"
-        :href="route('analyst.services.submittions', currentItem.uuid)"
-        class="
-          inline-flex
-          items-center
-          px-5
-          py-2.5
-          mt-4
-          text-sm
-          font-medium
-          text-center text-white
-          bg-blue-700
-          rounded-lg
-          hover:bg-blue-800
-          focus:ring-4 focus:outline-none focus:ring-blue-300
-          dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
-        "
-      >
-        Submitted Reports
-        <span
-          class="
-            inline-flex
-            justify-center
-            items-center
-            ml-2
-            w-4
-            h-4
-            text-xs
-            font-semibold
-            text-blue-800
-            bg-blue-200
-            rounded-full
-          "
-        >
-        {{ currentItem.approved_submittions_count }}
-        </span>
-      </Link>
     </template>
 
     <div class="px-4 sm:px-6 lg:px-8">
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-          <h1 class="text-xl font-semibold text-gray-900">Products</h1>
+          <h1 class="text-xl font-semibold text-gray-900">Submittions</h1>
           <p class="mt-2 text-sm text-gray-700">
-            A list of all products Service Providers have submitted.
+            A list of all submittions this Service has received.
           </p>
         </div>
       </div>
 
-      <ProductsGrid :services="services.data">
+      <SubmittionGrid :submittions="submittions.data">
         <template v-slot:actions="prop">
           <button
             type="button"
-            @click="currentItem = prop.service"
+            @click="currentItem = prop.submit"
             class="
               inline-flex
               items-center
@@ -211,7 +236,7 @@ const { processing, makeAction, currentItem, notes } = useActions(
             Show
           </button>
         </template>
-      </ProductsGrid>
+      </SubmittionGrid>
     </div>
   </AuthenticatedLayout>
 </template>

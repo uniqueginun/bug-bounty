@@ -6,7 +6,7 @@ import { useSlots } from 'vue';
 const slots = useSlots();
 
 defineProps({
-    services: Object
+    submittions: Object
 })
 
 const hasActions = computed(() => !!slots?.actions)
@@ -22,12 +22,19 @@ const hasActions = computed(() => !!slots?.actions)
                             <tr>
                                 <th scope="col"
                                     class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                    Name</th>
-                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                    Severity</th>
-                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status
+                                    User
                                 </th>
-                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Links
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                    Email
+                                </th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                    Mobile
+                                </th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                    Status
+                                </th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                    Creation Date
                                 </th>
                                 <th v-if="hasActions" scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                     Actions
@@ -35,24 +42,26 @@ const hasActions = computed(() => !!slots?.actions)
                             </tr>
                         </thead>
                         <tbody class="bg-white">
-                            <!-- Odd row -->
-                            <tr v-for="service of services" :key="service.uuid">
+                            <tr v-for="submit of submittions" :key="submit.uuid">
                                 <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                    {{ service.product_name }}
+                                    {{ submit.user?.name }}
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                    {{ service.severity }}
+                                    {{ submit.user?.email }}
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                    <product-status :status="service.status">{{ service.status }}</product-status>
+                                    {{ submit.user?.mobile }}
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                    <div v-html="service.links.join('<br />')" />
+                                    <product-status :status="submit.status">{{ submit.status }}</product-status>
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                    {{ submit.created_at }}
                                 </td>
                                 <td
                                     v-if="hasActions"
                                     class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                    <slot name="actions" v-bind:service="service" />
+                                    <slot name="actions" v-bind:submit="submit" />
                                 </td>
                             </tr>
 

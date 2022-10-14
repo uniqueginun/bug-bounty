@@ -129,7 +129,7 @@ const showingNavigationDropdown = ref(false);
               </div>
               <div class="ml-3">
                 <p class="text-base font-medium text-gray-700 group-hover:text-gray-900">{{ $page.props.auth.user.name }}</p>
-                <p class="text-sm font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                <p class="text-sm font-medium text-gray-500 group-hover:text-gray-700">{{ $page.props.auth.user.role }}</p>
               </div>
             </div>
           </a>
@@ -162,7 +162,7 @@ const showingNavigationDropdown = ref(false);
               </Link>
 
               <template v-if="$page.props.auth.user.internal_user">
-                <Link :href="route('analyst.services.index')" :class="{ 'bg-gray-200 text-gray-900': route().current('products.index') }" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                <Link :href="route('analyst.services.index')" :class="{ 'bg-gray-200 text-gray-900': route().current('analyst.services.index') }" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                     <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                     </svg>
@@ -197,7 +197,7 @@ const showingNavigationDropdown = ref(false);
               </div>
               <div class="ml-3">
                 <p class="text-sm font-medium text-gray-700 group-hover:text-gray-900">{{ $page.props.auth.user.name }}</p>
-                <p class="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                <p class="text-xs font-medium text-gray-500 group-hover:text-gray-700">{{ $page.props.auth.user.role }}</p>
               </div>
             </div>
           </a>

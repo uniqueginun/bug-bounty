@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Uuidable;
+use App\Models\Traits\HasActions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Service extends Model
 {
-    use HasFactory, Uuidable;
+    use HasFactory, Uuidable, HasActions;
 
     protected $guarded = [];
 
@@ -20,15 +21,16 @@ class Service extends Model
         'links' => 'json'
     ];
 
-    protected $hidden = [
-        'id',
-    ];
-
     protected $appends = ['short_description'];
 
     public function scopePending(Builder $builder)
     {
         $builder->where('status', 'pending');
+    }
+
+    public function scopePublished(Builder $builder)
+    {
+        $builder->where('status', 'published');
     }
 
     /**
@@ -62,24 +64,7 @@ class Service extends Model
 
     public function approvedSubmittions()
     {
-        return $this->hasMany(Submission::class)->where('status', 'approved');
-    }
-
-    public function actions()
-    {
-        return $this->morphMany(Action::class, 'actionable');
-    }
-
-    public function makeAction(string $actionName, $notes)
-    {
-        $this->update([
-            'status' => $actionName
-        ]);
-
-        $this->actions()->create([
-            'actuin_name' => $actionName,
-            'notes' => $notes
-        ]);
+        return $this->hasMany(Submission::class)->where('status', 'published');
     }
 
     public function submitReport(string $details, UploadedFile $uploadedFile)

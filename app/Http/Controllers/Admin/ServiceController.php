@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Throwable;
 use Inertia\Inertia;
 use App\Models\Service;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductActionRequest;
 use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
@@ -15,34 +14,27 @@ class ServiceController extends Controller
     public function index()
     {
         return Inertia::render('Admin/ServicesIndex', [
-            'services' => Service::query()->paginate()
+            'services' => Service::query()->withCount('approvedSubmittions')->paginate()
         ]);
     }
 
-    public function action(Request $request, Service $service)
+    public function action(ProductActionRequest $request, Service $service)
     {
-        $request->validate([
-            'action' => [
-                'required', 'in:published, rejected'
-            ],
-
-            'notes' => [
-                'nullable', Rule::requiredIf($request->action === 'rejected')
-            ]
-        ]);
 
         DB::beginTransaction();
 
-        try 
+        try
         {
             $service->makeAction($request->action, $request->notes);
 
             DB::commit();
 
-            return to_route('analyst.services.index')->with('success', 'Product ' . str($request->action)->title()->toString() . ' successfully.');
-        } 
-        
-        catch (Throwable $th) 
+            $message = 'Product ' . str($request->action)->title()->toString() . ' successfully.';
+
+            return to_route('analyst.services.index')->with('success', $message);
+        }
+
+        catch (Throwable $th)
         {
             report($th);
 
@@ -50,5 +42,16 @@ class ServiceController extends Controller
 
             return back()->with('error', 'Something went wrong.');
         }
+    }
+
+    public function submittions(Service $service)
+    {
+
+        $submittions = $service->submittions()->with(['attachments', 'user'])->paginate();
+
+        return Inertia::render('Admin/ServicesReports', [
+            'submittions' => $submittions,
+            'service' => $service
+        ]);
     }
 }
