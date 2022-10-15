@@ -1,8 +1,8 @@
 <?php
 
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FileDownloadController;
 use App\Http\Controllers\ServiceSubmittionController;
 use App\Http\Controllers\SubmittedProductsController;
@@ -24,7 +24,10 @@ Route::get('/', WelcomeController::class)->name('home');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', fn () => Inertia::render('Dashboard'))->name('dashboard');
+    Route::get('/dashboard/provider', [DashboardController::class, 'provider'])->name('dashboard.provider')->middleware('checkRole:provider');
+    Route::get('/dashboard/submitter', [DashboardController::class, 'submitter'])->name('dashboard.submitter')->middleware('checkRole:submitter');
+    Route::get('/dashboard/admin', [DashboardController::class, 'admin'])->name('dashboard.admin')->middleware('checkRole:analyst');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('products', [SubmittedProductsController::class, 'index'])->name('products.index');
     Route::get('products/create', [SubmittedProductsController::class, 'create'])->name('products.create');

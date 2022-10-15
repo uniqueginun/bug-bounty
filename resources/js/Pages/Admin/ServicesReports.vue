@@ -34,7 +34,7 @@ const { processing, makeAction, currentItem, notes } = useActions(
             </dd>
           </div>
         </div>
-        <div class="sm:col-span-6 mt-3">
+        <div class="sm:col-span-6 mt-3" v-if="currentItem?.attachments?.length">
           <label class="block text-sm font-bold text-gray-700"
             >Attachment</label
           >

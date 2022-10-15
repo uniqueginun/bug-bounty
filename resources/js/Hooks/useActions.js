@@ -1,11 +1,13 @@
 import { Inertia } from "@inertiajs/inertia";
 import { ref } from 'vue'
 
-const processing = ref(false);
-const currentItem = ref(null);
-const notes = ref("");
+
 
 export default function(routeName) {
+
+    const processing = ref(false);
+    const currentItem = ref(null);
+    const notes = ref("");
 
     const makeAction = (action) => {
         if (!currentItem.value) return;

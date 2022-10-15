@@ -41,7 +41,7 @@ class Service extends Model
     public function shortDescription(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, $attributes) => str($attributes['description'])->limit(150)->toString(),
+            get: fn ($value, $attributes) => str($attributes['description'] ?? '')->limit(150)->toString(),
         );
     }
 

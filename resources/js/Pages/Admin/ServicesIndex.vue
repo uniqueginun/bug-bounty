@@ -18,7 +18,7 @@ const { processing, makeAction, currentItem, notes } = useActions(
   <Head title="Products" />
 
   <AuthenticatedLayout>
-    <template v-if="currentItem" #aside>
+    <template v-if="!! currentItem" #aside>
       <ProductDetails :service="currentItem" />
       <form v-if="currentItem.status === 'pending'">
         <div class="sm:col-span-6 mt-3">

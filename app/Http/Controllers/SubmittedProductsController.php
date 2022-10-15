@@ -16,7 +16,13 @@ class SubmittedProductsController extends Controller
 
     public function index(Request $request)
     {
-        $services = $request->user()->services()->withCount('approvedSubmittions')->simplePaginate();
+        $services = $request->user()
+            ->services()
+            ->when($request->status, function ($query, $status) {
+                $query->whereStatus($status);
+            })
+            ->withCount('approvedSubmittions')
+            ->simplePaginate();
 
         return Inertia::render('Products', compact('services'));
     }

@@ -64,6 +64,16 @@ class User extends Authenticatable
         return $this->role === $role || $this->role === 'admin';
     }
 
+    public function getDashboardRoute(): string
+    {
+        return [
+            'provider' => 'dashboard.provider',
+            'submitter' => 'dashboard.submitter',
+            'admin' => 'dashboard.admin',
+            'analyst' => 'dashboard.admin'
+        ][$this->role];
+    }
+
     public function getInternalUserAttribute(): bool
     {
         return in_array($this->role, [
